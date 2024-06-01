@@ -16,8 +16,8 @@ def main():
     # Database configuration
     db_config = {
         "dbname": "exchange_rates_db",
-        "user": "db_user",
-        "password": "db_pass",
+        "user": "postgres",
+        "password": '6716578',
         "host": "localhost",
         "port": 5432
     }
@@ -28,10 +28,13 @@ def main():
     end_date = datetime.strptime(end_date, "%Y-%m-%d")
 
     while current_date <= end_date:
+        # make date
         date_str = current_date.strftime("%Y-%m-%d")
+        # fetch data from api
         data = Fetcher.fetch_data(date_str)
-        eur_rate = data["rates"]["EUR"]
-        transformed_data = Transformer(data, eur_rate)
+        # transform usd to eur
+        transformed_data = Transformer.transform(data)
+        # load the above data to postgres database
         loader.load_data(transformed_data)
         current_date += timedelta(days=1)
 
