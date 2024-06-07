@@ -8,7 +8,7 @@ class DataLoader:
     
     def load_data(self, data):
         insert_query = """
-            INSERT INTO exchange_rates (currency_date, currency_symbol, currency_rate)
+            INSERT INTO public.exchange_rates (currency_date, currency_symbol, currency_rate)
             VALUES (%s, %s, %s)
             ON CONFLICT (currency_date, currency_symbol)
             DO UPDATE SET currency_rate = EXCLUDED.currency_rate;
